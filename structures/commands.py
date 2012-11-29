@@ -7,6 +7,7 @@ by juacker
 '''
 
 import sys
+from config import logger
 
 class Command(object):
     def __init__(self,xml_command):
@@ -14,6 +15,6 @@ class Command(object):
             for attr in ['name','cmd_line']:
                 setattr(self,attr,str(xml_command.getElementsByTagName(attr)[0].childNodes[0].toxml()))
         except IndexError:
-            print "Attribute not found: "+attr
+            logger.log("Attribute not found: "+attr)
             sys.exit(0)
         

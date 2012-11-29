@@ -6,6 +6,7 @@ by juacker
 
 import pexpect,sys
 import time
+from config import logger
 
 class Connection(object):
     def __init__(self, conn_chain):
@@ -36,10 +37,10 @@ class Connection(object):
                 cmd_list = [self.host.password,self.host.prompt_cmd]
             if out==3:
                 cmd_list = [self.host.prompt_cmd,]
-                print "I either got key or connection timeout connection to "+self.host.host
+                logger.log("I either got key or connection timeout connection to "+self.host.host)
                 sys.exit(1)
             if out==4:
-                print "Timeout connecting to host: "+self.host.host
+                logger.log("Timeout connecting to host: "+self.host.host)
                 sys.exit(1)
 
 
@@ -61,10 +62,10 @@ class Connection(object):
                     cmd_list = [self.host.password,self.host.prompt_cmd]
                 if out==3:
                     cmd_list = [self.host.prompt_cmd,]
-                    print "I either got key or connection timeout connection to "+self.host.host
+                    logger.log("I either got key or connection timeout connection to "+self.host.host)
                     sys.exit(1)
                 if out==4:
-                    print "Timeout connecting to host: "+self.host.host
+                    logger.log("Timeout connecting to host: "+self.host.host)
                     sys.exit(1)
 
     
@@ -74,12 +75,12 @@ class Connection(object):
             self.connection.interact()
             sys.exit(0)
         except Exception as e:
-            print str(e)
-            print "Error switching to interactive mode"
+            logger.log(str(e))
+            logger.log("Error switching to interactive mode")
             sys.exit(1)
     
     def send_command(self,command):
-        print "Executing: "+command.cmd_line
+        logger.log("Executing: "+command.cmd_line)
         self.connection.setecho(False)
         #clean the buffer
         self.connection.buffer = ''

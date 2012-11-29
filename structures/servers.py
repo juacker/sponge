@@ -7,6 +7,7 @@ by juacker
 '''
 
 import sys
+from config import logger
 
 class Server(object):
     def __init__(self,xml_server):
@@ -17,7 +18,7 @@ class Server(object):
             if attr == 'parent':
                 self.parent = None
             else:
-                print "Attribute not found: "+attr
+                logger.log("Attribute not found: "+attr)
                 sys.exit(0)
         self.protocol = 'ssh'
         if self.protocol == 'ssh':

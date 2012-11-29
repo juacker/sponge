@@ -12,6 +12,7 @@ import xml.sax
 from xml.dom import minidom
 import sys, os
 from structures import servers,commands
+import logger
 
 
 class Config(object):
@@ -26,10 +27,10 @@ class Config(object):
                 try:
                     self.xml_analyzer.parse(file)
                 except Exception,err:
-                    print "Error analyzing XML file: "+str(os.path.basename(file))+' Error:'+str(err)
+                    logger.log("Error analyzing XML file: "+str(os.path.basename(file))+' Error:'+str(err))
                     sys.exit(0)
             else:
-                print "Required file not found:"+str(file)
+                logger.log("Required file not found:"+str(file))
                 sys.exit(0)
         self.servers_xml = minidom.parse(os.path.join(path,self.servers_file))
         self.commands_xml = minidom.parse(os.path.join(path,self.commands_file))
@@ -49,12 +50,12 @@ class Config(object):
                 except AttributeError as e:
                     pass
                 except Exception as e:
-                    print "Error generating server chain "+str(e)
+                    logger.log("Error generating server chain "+str(e))
                     sys.exit(1)
             return None
         server = get_serverandparent(xml_servers, servername)
         if not server:
-            print "Server not found: "+servername
+            logger.log("Server not found: "+servername)
             sys.exit(0)
         else:
             serverchain.insert(0,server)
@@ -78,12 +79,12 @@ class Config(object):
                 except AttributeError as e:
                     pass
                 except Exception as e:
-                    print "Error obtaining command "+str(e)
+                    logger.log("Error obtaining command "+str(e))
                     sys.exit(1)
             return None
         command = get_command(xml_commands, commandname)
         if not command:
-            print "command not found: "+commandname
+            logger.log("command not found: "+commandname)
             sys.exit(0)
         else:
             return command
