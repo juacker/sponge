@@ -8,7 +8,7 @@ by juacker
 
 import sys
 
-class Servers(object):
+class Server(object):
     def __init__(self,xml_server):
         try:
             for attr in ['user','password','host','port','name','parent']:
@@ -21,7 +21,7 @@ class Servers(object):
                 sys.exit(0)
         self.protocol = 'ssh'
         if self.protocol == 'ssh':
-            self.prompt = self.user+'@'+self.name+': >'
+            self.prompt = self.user+'@'+self.name+': '
             self.prompt_cmd = 'export PS1="'+self.prompt+'"'
             self.conn_cmd=self.protocol+' '+'-p '+self.port+' '+self.user+'@'+self.host
 

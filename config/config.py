@@ -11,7 +11,7 @@ from xml.sax.handler import ContentHandler
 import xml.sax
 from xml.dom import minidom
 import sys, os
-import servers
+from structures import servers,commands
 
 
 class Config(object):
@@ -41,7 +41,7 @@ class Config(object):
         def get_serverandparent(xml_servers, servername):
             for i in range(len(xml_servers)):
                 try:
-                    server = servers.Servers(xml_servers[i])
+                    server = servers.Server(xml_servers[i])
                     if server.name == servername:
                         return server
                 except IndexError as e:
@@ -63,4 +63,29 @@ class Config(object):
                 if server:
                     serverchain.insert(0,server)
         return serverchain
+    
+    def get_command(self, commandname):
+        command_list = self.commands_xml.childNodes
+        xml_commands = command_list[0].childNodes
+        def get_command(xml_commands, commandname):
+            for i in range(len(xml_commands)):
+                try:
+                    command = commands.Command(xml_commands[i])
+                    if command.name == commandname:
+                        return command
+                except IndexError as e:
+                    pass
+                except AttributeError as e:
+                    pass
+                except Exception as e:
+                    print "Error obtaining command "+str(e)
+                    sys.exit(1)
+            return None
+        command = get_command(xml_commands, commandname)
+        if not command:
+            print "command not found: "+commandname
+            sys.exit(0)
+        else:
+            return command
+            
         
