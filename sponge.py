@@ -20,7 +20,12 @@ def main():
     
     conn = connection.Connection(serverchain)
     conn.establish()
-    conn.interact()
+    if not args.command:
+        conn.interact()
+    else:
+        command = conf.get_command(args.command)
+        if command:
+            conn.send_command(command)
 
 if __name__=='__main__':
     main()

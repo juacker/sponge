@@ -14,13 +14,14 @@ class Connection(object):
         
 
     def establish(self):
-        host = self.conn_chain[0]
+        self.host = self.conn_chain[0]
         self.conn_chain.pop(0)
-        print "Connecting to: "+host.name
+        print "Connecting to: "+self.host.name
         out = -1
         cmd_list = []
-        expected = [host.prompt,'Are you sure','[pP]assword:',pexpect.EOF]
-        self.connection = pexpect.spawn(host.conn_cmd)
+        expected = [self.host.prompt,'Are you sure','[pP]assword:',pexpect.EOF]
+        self.connection = pexpect.spawn(self.host.conn_cmd)
+        self.connection.setecho(False)
         while not out == 0:
             for cmd in cmd_list:
                 self.connection.sendline(cmd)
@@ -30,53 +31,67 @@ class Connection(object):
             if out==0:
                 pass
             if out==1:
-                cmd_list=['yes',host.prompt_cmd]
+                cmd_list=['yes',self.host.prompt_cmd]
             if out==2:
-                cmd_list = [host.password,host.prompt_cmd]
+                cmd_list = [self.host.password,self.host.prompt_cmd]
             if out==3:
-                cmd_list = [host.prompt_cmd,]
-                print "I either got key or connection timeout connection to "+host.host
+                cmd_list = [self.host.prompt_cmd,]
+                print "I either got key or connection timeout connection to "+self.host.host
                 sys.exit(1)
             if out==4:
-                print "Timeout connecting to host: "+host.host
+                print "Timeout connecting to host: "+self.host.host
                 sys.exit(1)
                             
-        a = self.connection.before
+        #a = self.connection.before
         #print self.connection.before
-        self.connection.sendline('\r\n')
+        #self.connection.sendline('\r\n')
 
-        for host in self.conn_chain:
-            print "Connecting to: "+host.name
+        for self.host in self.conn_chain:
+            print "Connecting to: "+self.host.name
             out = -1
-            cmd_list = [host.conn_cmd,]
-            expected = [host.prompt,'Are you sure','[pP]assword:',pexpect.EOF]
+            cmd_list = [self.host.conn_cmd,]
+            expected = [self.host.prompt,'Are you sure','[pP]assword:',pexpect.EOF]
             while not out == 0:
                 for cmd in cmd_list:
                     self.connection.sendline(cmd)
+                    time.sleep(1)
                 out=self.connection.expect(expected)
                 if out==0:
                     pass
                 if out==1:
-                    cmd_list =['yes',host.prompt_cmd]
+                    cmd_list =['yes',self.host.prompt_cmd]
                 if out==2:
-                    cmd_list = [host.password,host.prompt_cmd]
+                    cmd_list = [self.host.password,self.host.prompt_cmd]
                 if out==3:
-                    cmd_list = [host.prompt_cmd,]
-                    print "I either got key or connection timeout connection to "+host.host
+                    cmd_list = [self.host.prompt_cmd,]
+                    print "I either got key or connection timeout connection to "+self.host.host
                     sys.exit(1)
                 if out==4:
-                    print "Timeout connecting to host: "+host.host
+                    print "Timeout connecting to host: "+self.host.host
                     sys.exit(1)
-            a = self.connection.before
-            self.connection.sendline('\r\n')
+            #a = self.connection.before
+            #self.connection.sendline('\r\n')
     
     def interact(self):
         self.interactive = True
         try:
             self.connection.interact()
             sys.exit(0)
-        except:
+        except Exception as e:
+            print str(e)
             print "Error switching to interactive mode"
             sys.exit(1)
+    
+    def send_command(self,command):
+        print "Executing: "+command.cmd_line
+        self.connection.setecho(False)
+        #clean the buffer
+        self.connection.buffer = ''
+        self.connection.sendline(command.cmd_line)
+        expected = [self.host.prompt]
+        self.connection.expect(expected)
+        print self.connection.before.strip(command.cmd_line)
+        
+        
 
 
