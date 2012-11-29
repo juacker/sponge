@@ -41,10 +41,7 @@ class Connection(object):
             if out==4:
                 print "Timeout connecting to host: "+self.host.host
                 sys.exit(1)
-                            
-        #a = self.connection.before
-        #print self.connection.before
-        #self.connection.sendline('\r\n')
+
 
         for self.host in self.conn_chain:
             print "Connecting to: "+self.host.name
@@ -69,8 +66,7 @@ class Connection(object):
                 if out==4:
                     print "Timeout connecting to host: "+self.host.host
                     sys.exit(1)
-            #a = self.connection.before
-            #self.connection.sendline('\r\n')
+
     
     def interact(self):
         self.interactive = True
