@@ -5,7 +5,7 @@ Copyright 2012 juan canete (jcazor@komlog.org)
 Licensed under The Apache License (2.0) 
 http://www.apache.org/licenses/LICENSE-2.0.html
 
-sponge.py - main
+sponge.py - main 
 '''
 
 import argparse
