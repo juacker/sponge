@@ -1,9 +1,10 @@
 '''
+Copyright 2012 juan canete (jcazor@komlog.org)
+Licensed under The Apache License (2.0) 
+http://www.apache.org/licenses/LICENSE-2.0.html
 
-servers.py Server configuration structures and methods
 
-created: 23/11/2012
-by juacker
+servers.py - Servers structures and methods
 '''
 
 import sys

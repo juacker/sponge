@@ -1,10 +1,9 @@
 '''
+Copyright 2012 juan canete (jcazor@komlog.org)
+Licensed under The Apache License (2.0) 
+http://www.apache.org/licenses/LICENSE-2.0.html
 
-xml.py xml methods
-
-created: 23/11/2012
-by juacker
-
+config.py - Configuration management
 '''
 
 from xml.sax.handler import ContentHandler
