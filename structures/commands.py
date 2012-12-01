@@ -1,9 +1,9 @@
 '''
+Copyright 2012 juan canete (jcazor@komlog.org)
+Licensed under The Apache License (2.0) 
+http://www.apache.org/licenses/LICENSE-2.0.html
 
-commands.py Command configuration structures and methods
-
-created: 29/11/2012
-by juacker
+commands.py - Command configuration structures and methods
 '''
 
 import sys
