@@ -11,8 +11,9 @@ sponge.py - main
 import argparse
 import os
 import sys
-from config import config
+from config import config, logger
 from connection import connection
+
 
 def main():
     parser = argparse.ArgumentParser(prog='sponge.py')
@@ -34,6 +35,9 @@ def main():
         command = conf.get_command(args.command)
         if command:
             conn.send_command(command)
+        else:
+            logger.log('Error: Command not found. Exiting')
+            sys.exit()
 
 if __name__=='__main__':
     main()
