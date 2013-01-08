@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+    <command>
+        <name>ls</name>
+        <cmd_line>ls -ltra --color=auto</cmd_line>
+    </command>
+    <command>
+        <name>df</name>
+        <cmd_line>df -hk</cmd_line>
+    </command>
+</commands>
