@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server-list>
+    <server>
+        <access-method>ssh</access-method>
+        <name>router</name>
+        <user>admin</user>
+        <password>1234</password>
+        <host>192.168.0.1</host>
+        <port>22</port>
+        <parent></parent>
+    </server>
+    <server>
+        <access-method>ssh</access-method>
+        <name>remote_host</name>
+        <user>remote_user</user>
+        <password>password</password>
+        <host>10.0.0.1</host>
+        <port>22</port>
+        <parent>router</parent>
+    </server>    
+</server-list>
