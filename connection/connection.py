@@ -25,6 +25,7 @@ class Connection(object):
         cmd_list = []
         expected = [self.host.prompt,'Are you sure','[pP]assword:',pexpect.EOF, pexpect.TIMEOUT]
         self.connection = pexpect.spawn(self.host.conn_cmd)
+        self.connection.delaybeforesend = 0.2
         self.connection.setecho(False)
         while not out == 0:
             for cmd in cmd_list:
@@ -72,13 +73,14 @@ class Connection(object):
                     sys.exit(1)
                 if out==4:
                     logger.log("Timeout connecting to host: "+self.host.host)
-                    sys.exit(1)                    
-        self.connection.sendline('\r\n')
+                    sys.exit(1)
+        self.connection.sendline('\n')
 
     
     def interact(self):
         self.interactive = True
         try:
+            self.connection.sendline('reset')
             self.connection.interact()
             sys.exit(0)
         except Exception as e:
@@ -88,13 +90,14 @@ class Connection(object):
     
     def send_command(self,command):
         logger.log("Executing: "+command.cmd_line)
-        self.connection.setecho(False)
-        #clean the buffer
+
         self.connection.buffer = ''
+        self.connection.logfile_read = sys.stdout
         self.connection.sendline(command.cmd_line)
+        self.connection.sendline('\n')
         expected = [self.host.prompt]
         self.connection.expect(expected, timeout=None)
-        print self.connection.before.strip(command.cmd_line)
+        
         
         
 

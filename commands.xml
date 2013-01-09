@@ -8,4 +8,12 @@
         <name>df</name>
         <cmd_line>df -hk</cmd_line>
     </command>
+    <command>
+        <name>ps</name>
+        <cmd_line>ps -eww -o pid,rss,args</cmd_line>
+    </command>
+    <command>
+        <name>file</name>
+        <cmd_line>echo "prueba" > /tmp/file.txt</cmd_line>
+    </command>
 </commands>

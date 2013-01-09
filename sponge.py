@@ -25,19 +25,19 @@ def main():
     sponge_dir = os.path.dirname(sys.argv[0])
     conf = config.Config(sponge_dir)
     serverchain = conf.get_serverschain(args.server)
-    
-    os.environ['INPUTRC'] = '/etc/inputrc'
+    command = None
+    if args.command:
+        command = conf.get_command(args.command)
+    if args.command and not command:
+        logger.log('Error: Command not found. Exiting')
+        sys.exit()
+    #os.environ['INPUTRC'] = '/etc/inputrc'
     conn = connection.Connection(serverchain)
     conn.establish()
     if not args.command:
         conn.interact()
     else:
-        command = conf.get_command(args.command)
-        if command:
-            conn.send_command(command)
-        else:
-            logger.log('Error: Command not found. Exiting')
-            sys.exit()
+        conn.send_command(command)
 
 if __name__=='__main__':
     main()

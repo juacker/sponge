@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server-list>
     <server>
-        <access-method>ssh</access-method>
-        <name>router</name>
-        <user>admin</user>
-        <password>1234</password>
-        <host>192.168.0.1</host>
+        <name>sisifo</name>
+        <user>xjuacan</user>
+        <password>b402-GA4</password>
+        <host>sisifo</host>
         <port>22</port>
         <parent></parent>
     </server>
     <server>
-        <access-method>ssh</access-method>
-        <name>remote_host</name>
-        <user>remote_user</user>
-        <password>password</password>
-        <host>10.0.0.1</host>
+        <name>calais</name>
+        <user>xjuacan</user>
+        <password>b402-GA4</password>
+        <host>calais</host>
         <port>22</port>
-        <parent>router</parent>
-    </server>    
+        <parent></parent>
+    </server>
+    <server>
+        <name>tantalo</name>
+        <user>xjuacan</user>
+        <password>b402-GA4</password>
+        <host>tantalo</host>
+        <port>22</port>
+        <parent></parent>
+    </server>
+    <server>
+        <name>mtb1tgsg1</name>
+        <user>sgpatch</user>
+        <password>tginstall</password>
+        <host>10.1.38.49</host>
+        <port>22</port>
+        <parent>calais</parent>
+    </server>
+    <server>
+        <name>deopge</name>
+        <user>deopge</user>
+        <password>Temporal</password>
+        <host>deopge</host>
+        <port>22</port>
+        <parent>mtb1tgsg1</parent>
+    </server>
 </server-list>
