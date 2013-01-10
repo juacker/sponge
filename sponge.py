@@ -14,6 +14,7 @@ import sys
 from config import config, logger
 from connection import connection
 
+DEFAULT_DIR='.sponge'
 
 def main():
     parser = argparse.ArgumentParser(prog='sponge.py')
@@ -22,7 +23,7 @@ def main():
     
     
     args = parser.parse_args()
-    sponge_dir = os.path.dirname(sys.argv[0])
+    sponge_dir = os.path.join(os.getenv('HOME'),DEFAULT_DIR)
     conf = config.Config(sponge_dir)
     serverchain = conf.get_serverschain(args.server)
     command = None
