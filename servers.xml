@@ -1,43 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server-list>
     <server>
-        <name>sisifo</name>
-        <user>xjuacan</user>
-        <password>b402-GA4</password>
-        <host>sisifo</host>
+        <name>host-1</name>
+        <user>user</user>
+        <password>pass</password>
+        <host>host1</host>
         <port>22</port>
         <parent></parent>
     </server>
     <server>
-        <name>calais</name>
-        <user>xjuacan</user>
-        <password>b402-GA4</password>
-        <host>calais</host>
+        <name>host-2</name>
+        <user>user</user>
+        <password>pass</password>
+        <host>host2</host>
         <port>22</port>
         <parent></parent>
     </server>
     <server>
-        <name>tantalo</name>
-        <user>xjuacan</user>
-        <password>b402-GA4</password>
-        <host>tantalo</host>
+        <name>host-3</name>
+        <user>user</user>
+        <password>pass</password>
+        <host>host3</host>
         <port>22</port>
-        <parent></parent>
-    </server>
-    <server>
-        <name>mtb1tgsg1</name>
-        <user>sgpatch</user>
-        <password>tginstall</password>
-        <host>10.1.38.49</host>
-        <port>22</port>
-        <parent>calais</parent>
-    </server>
-    <server>
-        <name>deopge</name>
-        <user>deopge</user>
-        <password>Temporal</password>
-        <host>deopge</host>
-        <port>22</port>
-        <parent>mtb1tgsg1</parent>
+        <parent>host-2</parent>
     </server>
 </server-list>
