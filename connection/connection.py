@@ -94,8 +94,8 @@ class Connection(object):
         self.connection.buffer = ''
         self.connection.logfile_read = sys.stdout
         self.connection.sendline(command.cmd_line)
-        self.connection.sendline('########## COMMAND END ###########\n')
-        expected = ['###########']
+        self.connection.sendline('########## COMMAND END ###########')
+        expected = [self.host.prompt+'########## COMMAND END ###########']
         self.connection.expect(expected, timeout=None)
         
         
