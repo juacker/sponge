@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-
+# coding: utf-8
 '''
-Copyright 2012 juan canete (jcazor@komlog.org)
+Copyright 2012 juan cañete (jcazor@komlog.org)
 Licensed under The Apache License (2.0) 
 http://www.apache.org/licenses/LICENSE-2.0.html
 
@@ -32,7 +32,6 @@ def main():
     if args.command and not command:
         logger.log('Error: Command not found. Exiting')
         sys.exit()
-    #os.environ['INPUTRC'] = '/etc/inputrc'
     conn = connection.Connection(serverchain)
     conn.establish()
     if not args.command:

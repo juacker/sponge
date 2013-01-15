@@ -1,5 +1,6 @@
+# coding: utf-8
 '''
-Copyright 2012 juan canete (jcazor@komlog.org)
+Copyright 2012 juan cañete (jcazor@komlog.org)
 Licensed under The Apache License (2.0) 
 http://www.apache.org/licenses/LICENSE-2.0.html
 
@@ -7,76 +8,38 @@ connection.py - Connection structures and methods
 '''
 
 import pexpect,sys
-import time
 from config import logger
+
+LOCAL_SHELL='/bin/bash'
 
 class Connection(object):
     def __init__(self, conn_chain):
         self.conn_chain = conn_chain
         self.interactive = False
-        
+        self.expected=[]       
 
     def establish(self):
-        self.host = self.conn_chain[0]
-        self.conn_chain.pop(0)
-        print "Connecting to: "+self.host.name
-        out = -1
-        t=0
-        cmd_list = []
-        expected = [self.host.prompt,'Are you sure','[pP]assword:',pexpect.EOF, pexpect.TIMEOUT]
-        self.connection = pexpect.spawn(self.host.conn_cmd)
-        self.connection.delaybeforesend = 0.2
-        self.connection.setecho(False)
-        while not out == 0:
-            for cmd in cmd_list:
-                self.connection.sendline(cmd)
-                time.sleep(1)                
-            out=self.connection.expect(expected)
-            if out==0:
-                pass
-            if out==1:
-                cmd_list=['yes',self.host.prompt_cmd]
-            if out==2:
-                cmd_list = [self.host.password,self.host.prompt_cmd]
-            if out==3:
-                cmd_list = [self.host.prompt_cmd,]
-                logger.log("I either got key or connection timeout connection to "+self.host.host)
-                sys.exit(1)
-            if out==4:
-                if t==0:
-                    cmd_list = [self.host.prompt_cmd,]
-                    t=1
-                else:
-                    logger.log("Timeout connecting to host: "+self.host.host)
-                    sys.exit(1)
+        self.connection = pexpect.spawn(LOCAL_SHELL)
+        self.connection.delaybeforesend = 0.5
+                
+        for host in self.conn_chain:
+            logger.log('Connecting to: '+host.name)
+            self.expected= host.protocol.expected
+            self.expected.append(pexpect.EOF)
+            self.expected.append(pexpect.TIMEOUT)
+            initial_state = host.protocol.get_initial_state()
+            self.connection.sendline(initial_state.send)
+            self.connection.setecho(False)
+            received = self.connection.expect(self.expected)
+            sendline = '$$$'
+            while sendline:
+                sendline = host.protocol.get_sendline(self.expected[received])
+                if sendline:
+                    self.connection.sendline(sendline)
+                    self.connection.setecho(False)
+                    received = self.connection.expect(self.expected)
+                    
 
-
-        for self.host in self.conn_chain:
-            print "Connecting to: "+self.host.name
-            out = -1
-            cmd_list = [self.host.conn_cmd,]
-            expected = [self.host.prompt,'Are you sure','[pP]assword:',pexpect.EOF]
-            while not out == 0:
-                for cmd in cmd_list:
-                    self.connection.sendline(cmd)
-                    time.sleep(1)
-                out=self.connection.expect(expected)
-                if out==0:
-                    pass
-                if out==1:
-                    cmd_list =['yes',self.host.prompt_cmd]
-                if out==2:
-                    cmd_list = [self.host.password,self.host.prompt_cmd]
-                if out==3:
-                    cmd_list = [self.host.prompt_cmd,]
-                    logger.log("I either got key or connection timeout connection to "+self.host.host)
-                    sys.exit(1)
-                if out==4:
-                    logger.log("Timeout connecting to host: "+self.host.host)
-                    sys.exit(1)
-        self.connection.sendline('\n')
-
-    
     def interact(self):
         self.interactive = True
         try:
@@ -94,12 +57,4 @@ class Connection(object):
         self.connection.buffer = ''
         self.connection.logfile_read = sys.stdout
         self.connection.sendline(command.cmd_line)
-        self.connection.sendline('########## COMMAND END ###########')
-        expected = [self.host.prompt+'########## COMMAND END ###########']
-        self.connection.expect(expected, timeout=None)
-        
-        
-        
-        
-
-
+        self.connection.expect(self.expected, timeout=None)
