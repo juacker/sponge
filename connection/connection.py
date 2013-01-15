@@ -37,8 +37,7 @@ class Connection(object):
                 if sendline:
                     self.connection.sendline(sendline)
                     self.connection.setecho(False)
-                    received = self.connection.expect(self.expected)
-                    
+                    received = self.connection.expect(self.expected)               
 
     def interact(self):
         self.interactive = True

@@ -25,14 +25,16 @@ class Protocol:
         
     def generate_states(self,host):
         if self.protocol == 'ssh':
-            state = State(receive=None, send='ssh -p '+host.port+' '+host.user+'@'+host.host, flag_initial=True)
-            self.states.append(state)
-            state = State(receive='Are you sure',send='yes')
-            self.states.append(state)
-            state = State(receive='[pP]assword:',send=host.password)
-            self.states.append(state)
-            state = State(receive=host.prompt,send='',flag_final=True)
-            self.states.append(state)
+            self.states.append(State(receive=None, send='ssh -p '+host.port+' '+host.user+'@'+host.host, flag_initial=True))
+            self.states.append(State(receive='Are you sure',send='yes'))
+            self.states.append(State(receive='[pP]assword:',send=host.password))
+            self.states.append(State(receive=host.prompt,send='',flag_final=True))
+        elif self.protocol == 'telnet':
+            self.states.append(State(receive=None, send='telnet '+host.host+' '+host.port,flag_initial=True))
+            self.states.append(State(receive='\nlogin:', send=host.user))
+            self.states.append(State(receive='Password:', send=host.password))
+            self.states.append(State(receive=host.prompt,send='',flag_final=True))
+            
     
     def initialize(self,host):
         self.generate_states(host)
